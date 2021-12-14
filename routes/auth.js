@@ -41,9 +41,14 @@ router.post("/sign-up", (req, res, next) => {
             res.redirect('/');
         })
         .catch(err => {
-            if (err instanceof Mongoose.Error.ValidationError) {
-                return res.render('auth/sign-up', { errorMessage: err.message });
+            // if (err instanceof Mongoose.Error.ValidationError) {
+            //     return res.render('auth/sign-up', { errorMessage: err.message });
+            // }
+
+            if (err.code === 11000) {
+                return res.render('auth/sign-up', { errorMessage: 'This user already exists'})
             }
+            next(err);
         }) 
 });
 
